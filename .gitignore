@@ -127,6 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+measurements.txt
 
 # Spyder project settings
 .spyderproject
