@@ -3,7 +3,7 @@ This is a Python implementation of the wildly popular One Billion Rows challenge
 
 ## Experimental Setup
 
-* All executions and runtimes have been noted while running on Python 3.10 on a Apple M2 Pro machine with a 16 GB RAM and 500 GB hard disk.
+* All executions and runtimes have been noted while running on Python 3.12 on a Apple M2 Pro machine with a 16 GB RAM and 500 GB hard disk.
 * `createMeasurements.py` copied from https://github.com/ifnesi/1brc/blob/main/createMeasurements.py.
 * For every iteration, the runtime noted below is the observed best runtime after multiple trials with different batch sizes and other parameter adjustments.  
 
@@ -11,10 +11,10 @@ This is a Python implementation of the wildly popular One Billion Rows challenge
 
 | Iteration Number | Runtime (in seconds) |                    Comments                      |
 | ---------------- | -------------------- | ------------------------------------------------ |
-| 1                | 1138.61              |  Only avg, single proces                         |
-| 2                | 1354.95              |  Avg + Min + Max, single process                 |
-| 3                |                      |                   |
-| 4                |                      |                   |
+| 1                | 1354.95              |  Avg + Min + Max, single process                 |
+| 2                |                      |                                                  |
+| 3                |                      |                                                  |
+| 4                |                      |                                                  |
 
 ### Implementation Details and improvements done over iterations
 
