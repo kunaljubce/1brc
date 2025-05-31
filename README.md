@@ -18,7 +18,7 @@ This is a Python implementation of the wildly popular One Billion Rows challenge
 
 ### Implementation Details and improvements done over iterations
 
-##### Iteration 1
+##### Attempt 1
 * Declare 4 global variables:
   * `total_temp_per_place_all_batches` - Dict[str, List[str]] - {place: [total_temp_till_prev_batch, number_of_times_place_has_appeared_till_prev_batch]}
   * `avg_temp_per_place_all_batches` - Dict[str, float] - {place: avg_temp_till_prev_batch}
