@@ -61,15 +61,17 @@ def calc_avg_min_max_over_entire_data(temp_per_place: List[Dict[str, float]]) ->
         avg_temp_per_place_all_batches[place] = round(total_temp_with_count[0]/total_temp_with_count[1], 1)
 
 
-def batch_calculation(input_batch: Tuple, batch_counter: int) -> int:
+# def batch_calculation(input_batch: Tuple, batch_counter: int) -> int:
+def batch_calculation(input_batch: Tuple) -> None:
     '''
     Function to calculate average per batch
 
     :param input_batch: One input batch containing `n` rows of measurements data
     :returns: Updated batch_counter.
     '''
-    batch_counter += 1
-    print("Processing batch - ", batch_counter)
+    # batch_counter += 1
+    # print("Processing batch - ", batch_counter)
+    print("Processing batch...")
     input_batch_list = []
 
     for element in input_batch:
@@ -78,17 +80,32 @@ def batch_calculation(input_batch: Tuple, batch_counter: int) -> int:
 
     # Once we have the batch data ready in a List[Dict[str, float]] format, we call the below function to calculate the avg, min, and max over this batch.
     calc_avg_min_max_over_entire_data(input_batch_list)
-    return batch_counter
+    # return batch_counter
+
+from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import Manager
+
+
+def set_global_dict(manager_dict):
+    global min_temp_per_place_all_batches
+    min_temp_per_place_all_batches = manager_dict
 
 
 def main():
 
     start_time = time.time()
-    batch_counter: int = 0
+    # batch_counter: int = 0
 
     with open(filename, 'rb') as f:
-        for n_lines in iter(lambda: tuple(line.decode('utf-8').strip() for line in islice(f, n)), ()):    
-            batch_counter = batch_calculation(n_lines, batch_counter)
+        # for n_lines in iter(lambda: tuple(line.decode('utf-8').strip() for line in islice(f, n)), ()):    
+        #     batch_counter = batch_calculation(n_lines, batch_counter)
+        batches_of_input = iter(lambda: tuple(line.decode('utf-8').strip() for line in islice(f, n)), ())
+
+        with Manager() as manager:
+            min_temp_per_place_all_batches = manager.dict()
+
+            with ProcessPoolExecutor(initializer=set_global_dict, initargs=(min_temp_per_place_all_batches,)) as executor:
+                executor.map(batch_calculation, batches_of_input)
 
     for place, avg_temp in avg_temp_per_place_all_batches.items():
         print(f"{place}: {min_temp_per_place_all_batches[place]}/{max_temp_per_place_all_batches[place]}/{avg_temp}")
